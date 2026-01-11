@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tic Tac Toe</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard">
+
+<h1 class="neon-title">TIC TAC TOE</h1>
+
+<div class="menu">
+
+  <!-- VS COMPUTER -->
+  <div class="menu-box" onclick="toggleAIModes()">🤖 VS Computer</div>
+
+  <div id="aiBox" class="name-box hidden">
+    <button onclick="selectCPU('simple')">😴 Simple</button>
+    <button onclick="selectCPU('normal')">🙂 Normal</button>
+    <button onclick="selectCPU('hard')">😈 Hard</button>
+  </div>
+
+  <!-- TWO PLAYER -->
+  <div class="menu-box" onclick="showNames()">👥 Two Player</div>
+
+  <div id="nameBox" class="name-box hidden">
+    <input id="p1" placeholder="Player X Name">
+    <input id="p2" placeholder="Player O Name">
+    <button onclick="startPVP()">Start Game</button>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="menu-box" onclick="showAbout()">ℹ️ About</div>
+
+  <!-- STATISTICS -->
+  <div class="menu-box" onclick="showStats()">📊 Statistics</div>
+
+  <!-- SETTINGS -->
+  <div class="menu-box" onclick="showSettings()">⚙️ Settings</div>
+</div>
+
+<!-- ABOUT POPUP -->
+<div id="about" class="popup hidden">
+  <div>
+    <h2>About Game</h2>
+    <p>
+      🎮 Neon Tic Tac Toe <br>
+      🤖 AI Levels: Simple / Normal / Hard <br>
+      👥 Two Player Mode <br>
+      🎵 Sound & Music System <br>
+      ✨ Clean Neon UI
+    </p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<!-- STATISTICS POPUP -->
+<div id="stats" class="popup hidden">
+  <div>
+    <h2>Statistics</h2>
+    <p id="statText"></p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<!-- SETTINGS POPUP -->
+<div id="settings" class="popup hidden">
+  <div>
+    <h2>Settings</h2>
+    <button onclick="toggleMusic()">🎵 Music ON / OFF</button>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<!-- SOUNDS -->
+<audio id="bgMusic" loop src="sound/bg.mp3"></audio>
+<audio id="clickSound" src="sound/Click.mp3"></audio>
+
+<script>
+const bgMusic = document.getElementById("bgMusic");
+const clickSound = document.getElementById("clickSound");
+
+/* MUSIC AUTO PLAY */
+if(localStorage.music !== "off"){
+  bgMusic.volume = 0.5;
+  bgMusic.play();
+}
+
+function playClick(){
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
+
+/* AI MODE */
+function toggleAIModes(){
+  playClick();
+  aiBox.classList.toggle("hidden");
+}
+
+function selectCPU(level){
+  playClick();
+  localStorage.mode = "cpu";
+  localStorage.level = level;
+  window.location = "game.html";
+}
+
+/* PVP */
+function showNames(){
+  playClick();
+  nameBox.classList.toggle("hidden");
+}
+
+function startPVP(){
+  playClick();
+  localStorage.mode = "pvp";
+  localStorage.p1 = p1.value || "Player X";
+  localStorage.p2 = p2.value || "Player O";
+  window.location = "game.html";
+}
+
+/* ABOUT */
+function showAbout(){
+  playClick();
+  about.classList.remove("hidden");
+}
+
+/* STATS */
+function showStats(){
+  playClick();
+  statText.innerText =
+`X Wins : ${localStorage.x || 0}
+O Wins : ${localStorage.o || 0}
+Draws  : ${localStorage.d || 0}`;
+  stats.classList.remove("hidden");
+}
+
+/* SETTINGS */
+function showSettings(){
+  playClick();
+  settings.classList.remove("hidden");
+}
+
+function toggleMusic(){
+  playClick();
+  if(bgMusic.paused){
+    bgMusic.play();
+    localStorage.music = "on";
+  }else{
+    bgMusic.pause();
+    localStorage.music = "off";
+  }
+}
+
+/* CLOSE POPUP */
+function closePopup(){
+  about.classList.add("hidden");
+  stats.classList.add("hidden");
+  settings.classList.add("hidden");
+}
+</script>
+
+</body>
+</html>
